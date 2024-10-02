@@ -1,0 +1,46 @@
+import * as React from 'react'
+import useSwr from 'swr'
+import { SupabaseContext } from '../context'
+import { SelectArg } from '../types'
+
+/**
+ * A hook that implements a SWR strategy to fetch data from a Supabase table
+ * @param from - The table to query
+ * @param select - The fields to select. Can be either a string that defaults to '*' or an object with the following properties:
+ * - str: The field to select
+ * - head: If true, only the first row will be returned
+ * - count: If set to 'exact', only the exact number of rows will be returned. If set to 'planned', the number of rows will be estimated. If set to 'estimated', the number of rows will be estimated.
+ * @returns a swr hook object with the following properties:
+ * - data: The data returned by the query
+ * - error: The error returned by the query
+ * - isValidating: If true, the query is still running
+ * * ```typescript
+ *  const { data, error } = useTable('users', '*')
+ * ```
+ */
+export function useTable<T>(from: string, select: SelectArg = '*') {
+  const context = React.useContext(SupabaseContext)
+
+  if (context === undefined) {
+    throw new Error('useTable must be used within a SupabaseContext.Provider')
+  }
+
+  const selectStr = typeof select === 'string' ? select : select.query
+  const selectOptions =
+    typeof select === 'string'
+      ? undefined
+      : { head: select.head, count: select.count }
+
+  return useSwr<T>(`${from}${selectStr}`, async (_key: string) => {
+    //@ts-ignore
+    const { data, error } = await context.sb
+      ?.from(from)
+      .select(selectStr, selectOptions)
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  })
+}
