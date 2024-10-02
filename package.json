@@ -1,7 +1,7 @@
 {
   "name": "@emirchus/use-supabase",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This is a simple zero dependencies package that gives you access to your Supabase client using a React hook!",
   "author": "Emirchus",
   "license": "Apache-2.0",
