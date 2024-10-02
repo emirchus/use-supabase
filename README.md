@@ -28,7 +28,6 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { SupabaseContextProvider } from '@emirchus/use-supabase'
 
-import reportWebVitals from './reportWebVitals'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient('supabase-url', 'supabase-anon-key')
@@ -41,8 +40,6 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 )
-
-reportWebVitals()
 ```
 
 ### Next.js
@@ -144,3 +141,6 @@ The context will make avaialble to the hooks the client and the user so that you
 ```tsx
 const { email } = useUser()
 ```
+
+## Credits
+This project was originally created by [GuiBibeau](https://github.com/GuiBibeau). I appreciate the initial work and foundation laid by GuiBibeau, which has allowed this project to continue evolving and serving the needs of developers working with Supabase and React.
